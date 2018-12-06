@@ -76,7 +76,8 @@ def get_attr(attr_map, id_attr_map, attr):
     return im_ids
 
 
-class ImageLoader(torch.utils.data.Dataset):
+# heavy cpu load, light memory load
+class ImageDiskLoader(torch.utils.data.Dataset):
 
     def __init__(self, im_ids):
         self.transform = transforms.Compose([
@@ -96,19 +97,29 @@ class ImageLoader(torch.utils.data.Dataset):
 
         return data
 
-# import utils
-# images = sorted(glob.glob(IMAGE_PATH + '*.jpg'))
-#
-# resize = transforms.Compose([
-#                         transforms.Resize(64),
-#                         transforms.ToTensor(),
-#                     ])
-#
-# data = []
-# for image in images[10000:10025]:
-#     im = Image.open(image)
-#     im = crop(im, 30, 0, 178, 178)
-#     im_tensor = resize(im)
-#     data.append(np.transpose(im_tensor, (1, 2, 0)))
-#
-# utils.show_images(data, columns=5, max_rows=10)
+
+# light cpu load, heavy memory load
+class ImageMemoryLoader(torch.utils.data.Dataset):
+
+    def __init__(self, im_ids):
+        self.transform = transforms.Compose([
+                        transforms.Resize(64),
+                        transforms.ToTensor(),
+                    ])
+
+        # store ALL image tensors in memory for extra speed
+        self.images = []
+        for im_id in im_ids:
+            self.images.append(self.get_im(im_id))
+
+    def get_im(self, im_id):
+        im_path = IMAGE_PATH + im_id
+        im = Image.open(im_path)
+        im = crop(im, 30, 0, 178, 178)
+        return self.transform(im)
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        return self.images[idx]

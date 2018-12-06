@@ -14,7 +14,7 @@ import utils
 
 class BetaVAE(nn.Module):
 
-    def __init__(self, latent_size=32, beta=25):
+    def __init__(self, latent_size=32, beta=1):
         super(BetaVAE, self).__init__()
 
         self.latent_size = latent_size

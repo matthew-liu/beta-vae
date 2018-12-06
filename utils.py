@@ -68,11 +68,11 @@ def restore_latest(net, folder):
         net(torch.nn.module): The net to restore
         folder(str): The folder path
     Returns:
-        int: Attempts to parse the epoch from the state and returns it if possible. Otherwise returns 1.
+        int: Attempts to parse the epoch from the state and returns it if possible. Otherwise returns 0.
     """
 
     checkpoints = sorted(glob.glob(folder + '/*.pt'), key=os.path.getmtime)
-    start_it = 1
+    start_it = 0
     if len(checkpoints) > 0:
         restore(net, checkpoints[-1])
         try:

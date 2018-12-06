@@ -90,21 +90,20 @@ print('num train_images:', len(train_ids))
 print('num test_images:', len(test_ids))
 
 
-data_train = prep.ImageLoader(train_ids)
-data_test = prep.ImageLoader(test_ids)
+data_train = prep.ImageMemoryLoader(train_ids)
+data_test = prep.ImageMemoryLoader(test_ids)
 
 kwargs = {'num_workers': multiprocessing.cpu_count(),
           'pin_memory': True} if use_cuda else {}
 
 train_loader = torch.utils.data.DataLoader(data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
-test_loader = torch.utils.data.DataLoader(data_test, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+test_loader = torch.utils.data.DataLoader(data_test, batch_size=TEST_BATCH_SIZE, shuffle=True, **kwargs)
 
 model = models.BetaVAE().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 start_epoch = model.load_last_model(MODEL_PATH) + 1
-model.load_last_model(MODEL_PATH)
 
 train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
 
