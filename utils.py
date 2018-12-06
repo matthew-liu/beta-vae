@@ -132,7 +132,7 @@ def read_log(filename, default_value=None):
     return default_value
 
 
-def show_images(images, columns=5, max_rows=5, path=None):
+def show_images(images, columns=5, max_rows=5, path=None, tensor=False):
     """
 
     Args:
@@ -143,6 +143,9 @@ def show_images(images, columns=5, max_rows=5, path=None):
     """
 
     images = images[:min(len(images), max_rows * columns)]
+
+    if tensor:
+        images = [np.transpose(im, (1, 2, 0)) for im in images]
 
     layout = {'pad': 0, 'w_pad': 0, 'h_pad': 0}
     plt.figure(figsize=(64, 64), tight_layout=layout)
@@ -157,10 +160,10 @@ def show_images(images, columns=5, max_rows=5, path=None):
         plt.show()
 
 
-def compare_2_image_arrays(im1, im2, num_images=5, path=None):
+def compare_2_image_arrays(im1, im2, num_images=5, path=None, tensor=False):
     assert len(im1) == len(im2)
     num_images = min(len(im1), num_images)
-    show_images(im1[:num_images] + im2[:num_images], columns=num_images, max_rows=2, path=path)
+    show_images(im1[:num_images] + im2[:num_images], columns=num_images, max_rows=2, path=path, tensor=tensor)
 
 
 def plot(x_values, y_values, title, xlabel, ylabel):

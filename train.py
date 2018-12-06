@@ -1,11 +1,11 @@
 import torch
 import torch.optim as optim
-import numpy as np
 import multiprocessing
 import time
 import preprocess as prep
 import models
 import utils
+from torchvision.utils import save_image
 
 
 def train(model, device, train_loader, optimizer, epoch, log_interval):
@@ -48,8 +48,8 @@ def test(model, device, test_loader, return_images=0, log_interval=None):
             test_loss += loss.item()
 
             if return_images > 0 and len(original_images) < return_images:
-                original_images.append(np.transpose(data[0].cpu(), (1, 2, 0)))
-                rect_images.append(np.transpose(output[0].cpu(), (1, 2, 0)))
+                original_images.append(data[0].cpu())
+                rect_images.append(output[0].cpu())
 
             if log_interval is not None and batch_idx % log_interval == 0:
                 print('{} Test: [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
@@ -71,7 +71,8 @@ BATCH_SIZE = 256
 TEST_BATCH_SIZE = 10
 EPOCHS = 100
 
-LEARNING_RATE = 1e-4
+LATENT_SIZE = 128
+LEARNING_RATE = 3e-4
 
 USE_CUDA = True
 PRINT_INTERVAL = 100
@@ -98,21 +99,23 @@ kwargs = {'num_workers': multiprocessing.cpu_count(),
 train_loader = torch.utils.data.DataLoader(data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
 test_loader = torch.utils.data.DataLoader(data_test, batch_size=TEST_BATCH_SIZE, shuffle=True, **kwargs)
 
-model = models.BetaVAE().to(device)
+model = models.BetaVAE(latent_size=LATENT_SIZE).to(device)
 
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-start_epoch = model.load_last_model(MODEL_PATH) + 1
-train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
+if __name__ == "__main__":
 
-for epoch in range(start_epoch, EPOCHS + 1):
-    train_loss = train(model, device, train_loader, optimizer, epoch, PRINT_INTERVAL)
-    test_loss, original_images, rect_images = test(model, device, test_loader, return_images=5)
+    start_epoch = model.load_last_model(MODEL_PATH) + 1
+    train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
 
-    utils.compare_2_image_arrays(original_images, rect_images, path=COMPARE_PATH + str(epoch))
+    for epoch in range(start_epoch, EPOCHS + 1):
+        train_loss = train(model, device, train_loader, optimizer, epoch, PRINT_INTERVAL)
+        test_loss, original_images, rect_images = test(model, device, test_loader, return_images=5)
 
-    train_losses.append((epoch, train_loss))
-    test_losses.append((epoch, test_loss))
-    utils.write_log(LOG_PATH, (train_losses, test_losses))
+        save_image(original_images + rect_images, COMPARE_PATH + str(epoch) + '.png', padding=0, nrow=len(original_images))
 
-    model.save_model(MODEL_PATH + '%03d.pt' % epoch)
+        train_losses.append((epoch, train_loss))
+        test_losses.append((epoch, test_loss))
+        utils.write_log(LOG_PATH, (train_losses, test_losses))
+
+        model.save_model(MODEL_PATH + '%03d.pt' % epoch)
