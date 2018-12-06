@@ -89,9 +89,8 @@ train_ids, test_ids = prep.split_dataset()
 print('num train_images:', len(train_ids))
 print('num test_images:', len(test_ids))
 
-
-data_train = prep.ImageMemoryLoader(train_ids)
-data_test = prep.ImageMemoryLoader(test_ids)
+data_train = prep.ImageDiskLoader(train_ids)
+data_test = prep.ImageDiskLoader(test_ids)
 
 kwargs = {'num_workers': multiprocessing.cpu_count(),
           'pin_memory': True} if use_cuda else {}
