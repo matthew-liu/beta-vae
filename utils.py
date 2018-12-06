@@ -68,11 +68,11 @@ def restore_latest(net, folder):
         net(torch.nn.module): The net to restore
         folder(str): The folder path
     Returns:
-        int: Attempts to parse the epoch from the state and returns it if possible. Otherwise returns 0.
+        int: Attempts to parse the epoch from the state and returns it if possible. Otherwise returns 1.
     """
 
     checkpoints = sorted(glob.glob(folder + '/*.pt'), key=os.path.getmtime)
-    start_it = 0
+    start_it = 1
     if len(checkpoints) > 0:
         restore(net, checkpoints[-1])
         try:
@@ -132,7 +132,7 @@ def read_log(filename, default_value=None):
     return default_value
 
 
-def show_images(images, columns=5, max_rows=5):
+def show_images(images, columns=5, max_rows=5, path=None):
     """
 
     Args:
@@ -150,7 +150,17 @@ def show_images(images, columns=5, max_rows=5):
         plt.subplot(len(images) / columns + 1, columns, ii + 1)
         plt.axis('off')
         plt.imshow(image)
-    plt.show()
+
+    if path is not None and os.path.exists(os.path.dirname(path)):
+        plt.savefig(path)
+    else:
+        plt.show()
+
+
+def compare_2_image_arrays(im1, im2, num_images=5, path=None):
+    assert len(im1) == len(im2)
+    num_images = min(len(im1), num_images)
+    show_images(im1[:num_images] + im2[:num_images], columns=num_images, max_rows=2, path=path)
 
 
 def plot(x_values, y_values, title, xlabel, ylabel):

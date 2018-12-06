@@ -11,15 +11,12 @@ import utils
 # Latents 32
 # Decoder Deconv reverse of encoder. ReLU activation. Gaussian.
 
-Base_Accuracy = 0
-
 
 class BetaVAE(nn.Module):
 
-    def __init__(self, latent_size=32, beta=250):
+    def __init__(self, latent_size=32, beta=25):
         super(BetaVAE, self).__init__()
 
-        self.best_accuracy = Base_Accuracy
         self.latent_size = latent_size
         self.beta = beta
 
@@ -100,13 +97,6 @@ class BetaVAE(nn.Module):
 
     def save_model(self, file_path, num_to_keep=1):
         utils.save(self, file_path, num_to_keep)
-
-    def save_best_model(self, accuracy, file_path, num_to_keep=1):
-        # save the model if it is the best
-        if accuracy > self.best_accuracy:
-            self.best_accuracy = accuracy
-            utils.save(self, file_path, num_to_keep)
-            print("new best model with accuracy", str(accuracy), "saved!")
 
     def load_model(self, file_path):
         utils.restore(self, file_path)
