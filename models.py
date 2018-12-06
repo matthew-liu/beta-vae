@@ -84,8 +84,8 @@ class BetaVAE(nn.Module):
         )
 
     def loss(self, recon_x, x, mu, logvar):
-        # reconstruction losses are summed over all elements and batch, then divided by batch size
-        recon_loss = F.binary_cross_entropy(recon_x, x, reduction='sum') / x.shape[0]
+        # reconstruction losses are summed over all elements and batch
+        recon_loss = F.binary_cross_entropy(recon_x, x, reduction='sum')
 
         # see Appendix B from VAE paper:
         # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014

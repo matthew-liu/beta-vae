@@ -69,7 +69,7 @@ def test(model, device, test_loader, return_images=0, log_interval=None):
 # parameters
 BATCH_SIZE = 256
 TEST_BATCH_SIZE = 10
-EPOCHS = 300
+EPOCHS = 100
 
 LEARNING_RATE = 1e-4
 
@@ -104,7 +104,6 @@ model = models.BetaVAE().to(device)
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 start_epoch = model.load_last_model(MODEL_PATH) + 1
-
 train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
 
 for epoch in range(start_epoch, EPOCHS + 1):
