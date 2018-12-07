@@ -132,11 +132,12 @@ def read_log(filename, default_value=None):
     return default_value
 
 
-def show_images(images, columns=5, max_rows=5, path=None, tensor=False):
+def show_images(images, titles=None, columns=5, max_rows=5, path=None, tensor=False):
     """
 
     Args:
         images(list[np.array]): Images to show
+        titles(list[string]): Titles for each of the images
         columns(int): How many columns to use in the tiling
         max_rows(int): If there are more than columns * max_rows images,
         only the first n of them will be shown.
@@ -147,23 +148,18 @@ def show_images(images, columns=5, max_rows=5, path=None, tensor=False):
     if tensor:
         images = [np.transpose(im, (1, 2, 0)) for im in images]
 
-    layout = {'pad': 0, 'w_pad': 0, 'h_pad': 0}
-    plt.figure(figsize=(64, 64), tight_layout=layout)
+    plt.figure(figsize=(20, 10))
     for ii, image in enumerate(images):
         plt.subplot(len(images) / columns + 1, columns, ii + 1)
         plt.axis('off')
+        if titles is not None and ii < len(titles):
+            plt.title(str(titles[ii]))
         plt.imshow(image)
 
     if path is not None and os.path.exists(os.path.dirname(path)):
         plt.savefig(path)
     else:
         plt.show()
-
-
-def compare_2_image_arrays(im1, im2, num_images=5, path=None, tensor=False):
-    assert len(im1) == len(im2)
-    num_images = min(len(im1), num_images)
-    show_images(im1[:num_images] + im2[:num_images], columns=num_images, max_rows=2, path=path, tensor=tensor)
 
 
 def plot(x_values, y_values, title, xlabel, ylabel):

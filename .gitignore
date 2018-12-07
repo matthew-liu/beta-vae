@@ -1,6 +1,4 @@
 .idea/
 data/
 __pycache__/
-checkpoints/
 comparisons/
-logs/

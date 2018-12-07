@@ -89,9 +89,14 @@ if __name__ == "__main__":
     # train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
     # plot_loss(train_losses, test_losses, PLOT_PATH)
 
-    ims, im_ids = get_attr_ims('smiling', num=10)
-    utils.show_images(ims, tensor=True)
+    ims, im_ids = get_attr_ims('male', num=20)
+    utils.show_images(ims, titles=im_ids, tensor=True)
     print(im_ids)
+    man_sunglasses = ['068734.jpg', '190055.jpg', '151237.jpg']
+    man_noglasses = []
+    women_noglasses = []
+
+    # utils.show_images(prep.get_ims(man_eyeglasses), tensor=True)
     # inter_ims = linear_interpolate(ims[0], ims[1], model, device)
 
     # save_image(inter_ims, OUTPUT_PATH + 'interpolate' + '.png', padding=0, nrow=10)

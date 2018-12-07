@@ -76,14 +76,27 @@ def get_attr(attr_map, id_attr_map, attr):
     return im_ids
 
 
+im_transform = transforms.Compose([
+    transforms.Resize(64),
+    transforms.ToTensor(),
+])
+
+
+def get_ims(im_ids):
+    ims = []
+    for im_id in im_ids:
+        im_path = IMAGE_PATH + im_id
+        im = Image.open(im_path)
+        im = crop(im, 30, 0, 178, 178)
+        ims.append(im_transform(im))
+    return ims
+
+
 # heavy cpu load, light memory load
 class ImageDiskLoader(torch.utils.data.Dataset):
 
     def __init__(self, im_ids):
-        self.transform = transforms.Compose([
-                        transforms.Resize(64),
-                        transforms.ToTensor(),
-                    ])
+        self.transform = im_transform
         self.im_ids = im_ids
 
     def __len__(self):
@@ -102,11 +115,7 @@ class ImageDiskLoader(torch.utils.data.Dataset):
 class ImageMemoryLoader(torch.utils.data.Dataset):
 
     def __init__(self, im_ids):
-        self.transform = transforms.Compose([
-                        transforms.Resize(64),
-                        transforms.ToTensor(),
-                    ])
-
+        self.transform = im_transform
         # store ALL image tensors in memory for extra speed
         self.images = []
         for im_id in im_ids:
