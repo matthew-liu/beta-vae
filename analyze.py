@@ -64,12 +64,12 @@ def get_attr_ims(attr, num=10):
 
 
 USE_CUDA = True
-MODEL = 'l32-e100'
+MODEL = 'l200'
 MODEL_PATH = './checkpoints/' + MODEL
 LOG_PATH = './logs/' + MODEL + '/log.pkl'
 OUTPUT_PATH = './samples/'
 PLOT_PATH = './plots/' + MODEL
-LATENT_SIZE = 32
+LATENT_SIZE = 200
 
 use_cuda = USE_CUDA and torch.cuda.is_available()
 device = torch.device("cuda" if use_cuda else "cpu")
@@ -81,20 +81,20 @@ attr_map, id_attr_map = prep.get_attributes()
 
 if __name__ == "__main__":
 
-    # model.load_last_model(MODEL_PATH)
+    model.load_last_model(MODEL_PATH)
 
-    # samples = generate(model, 60, device)
-    # save_image(samples, OUTPUT_PATH + MODEL + '.png', padding=0, nrow=10)
-    #
-    # train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
-    # plot_loss(train_losses, test_losses, PLOT_PATH)
+    samples = generate(model, 60, device)
+    save_image(samples, OUTPUT_PATH + MODEL + '.png', padding=0, nrow=10)
 
-    ims, im_ids = get_attr_ims('male', num=20)
-    utils.show_images(ims, titles=im_ids, tensor=True)
-    print(im_ids)
-    man_sunglasses = ['068734.jpg', '190055.jpg', '151237.jpg']
-    man_noglasses = []
-    women_noglasses = []
+    train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
+    plot_loss(train_losses, test_losses, PLOT_PATH)
+
+    # ims, im_ids = get_attr_ims('male', num=20)
+    # utils.show_images(ims, titles=im_ids, tensor=True)
+    # print(im_ids)
+    # man_sunglasses = ['068734.jpg', '190055.jpg', '151237.jpg']
+    # man_noglasses = []
+    # women_noglasses = []
 
     # utils.show_images(prep.get_ims(man_eyeglasses), tensor=True)
     # inter_ims = linear_interpolate(ims[0], ims[1], model, device)
