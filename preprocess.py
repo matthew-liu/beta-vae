@@ -82,6 +82,7 @@ im_transform = transforms.Compose([
 ])
 
 
+# returns pytorch tensor of images
 def get_ims(im_ids):
     ims = []
     for im_id in im_ids:

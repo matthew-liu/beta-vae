@@ -69,10 +69,10 @@ def test(model, device, test_loader, return_images=0, log_interval=None):
 # parameters
 BATCH_SIZE = 256
 TEST_BATCH_SIZE = 10
-EPOCHS = 100
+EPOCHS = 400
 
-LATENT_SIZE = 200
-LEARNING_RATE = 3e-4
+LATENT_SIZE = 100
+LEARNING_RATE = 1e-3
 
 USE_CUDA = True
 PRINT_INTERVAL = 100
@@ -99,7 +99,10 @@ kwargs = {'num_workers': multiprocessing.cpu_count(),
 train_loader = torch.utils.data.DataLoader(data_train, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
 test_loader = torch.utils.data.DataLoader(data_test, batch_size=TEST_BATCH_SIZE, shuffle=True, **kwargs)
 
-model = models.BetaVAE(latent_size=LATENT_SIZE).to(device)
+print('latent size:', LATENT_SIZE)
+
+# model = models.BetaVAE(latent_size=LATENT_SIZE).to(device)
+model = models.DFCVAE(latent_size=LATENT_SIZE).to(device)
 
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
