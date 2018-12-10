@@ -97,7 +97,7 @@ def get_attr_ims(attr, num=10):
 
 
 USE_CUDA = True
-MODEL = 'dfc-400'
+MODEL = 'dfc-300'
 MODEL_PATH = './checkpoints/' + MODEL
 LOG_PATH = './logs/' + MODEL + '/log.pkl'
 OUTPUT_PATH = './samples/'
@@ -123,7 +123,6 @@ if __name__ == "__main__":
     samples = generate(model, 60, device)
     save_image(samples, OUTPUT_PATH + MODEL + '.png', padding=0, nrow=10)
 
-
     train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
     plot_loss(train_losses, test_losses, PLOT_PATH)
 
@@ -131,8 +130,8 @@ if __name__ == "__main__":
     get image ids with corresponding attribute
     '''
     ims, im_ids = get_attr_ims('eyeglasses', num=20)
-    utils.show_images(ims, titles=im_ids, tensor=True)
-    print(im_ids)
+    # utils.show_images(ims, titles=im_ids, tensor=True)
+    # print(im_ids)
 
     man_sunglasses_ids = ['172624.jpg', '164754.jpg', '089604.jpg', '024726.jpg']
     man_ids = ['056224.jpg', '118398.jpg', '168342.jpg']

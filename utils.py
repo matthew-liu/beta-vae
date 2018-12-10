@@ -21,7 +21,11 @@ def restore(net, save_file):
     """
 
     net_state_dict = net.state_dict()
-    restore_state_dict = torch.load(save_file)
+
+    if torch.cuda.is_available():
+        restore_state_dict = torch.load(save_file)
+    else:
+        restore_state_dict = torch.load(save_file, map_location='cpu')
 
     restored_var_names = set()
 
