@@ -1,5 +1,5 @@
 # Face Generation Using Variational Autoencoders
-This repo containing training code for two different VAEs implemented with Pytorch. <br />
+This repo contains training code for two different VAEs implemented with Pytorch. <br />
 I used the [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) Dataset for training, with 182637 training images and 19962 testing images. <br />
 Trained model can be found in [/samples](/samples).
 
@@ -12,7 +12,7 @@ Trained model can be found in [/samples](/samples).
 ![dfc-vae](arts/dfc-vae.png)
 
 
-## Results:
+## Results after 300 epochs:
 
 ##### Original Faces (Top) vs. Reconstructed (Bottom) :
 ![r1](arts/297-dh.png) ![r2](arts/301-dh.png)
