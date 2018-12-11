@@ -29,7 +29,7 @@ Trained model can be found in [/samples](/samples).
 
 (Notes: output images above are results after image dehazing using [this script [3]](https://github.com/cssartori/image-dehazing.git))
 
-# References
+## References
 [1] β-VAE: https://openreview.net/pdf?id=Sy2fzU9gl <br />
 [2] DFC-VAE: https://arxiv.org/abs/1610.00291 <br />
 [3] Dehaze: https://github.com/cssartori/image-dehazing.git
