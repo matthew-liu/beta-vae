@@ -120,8 +120,8 @@ if __name__ == "__main__":
     '''
     generate images using model
     '''
-    samples = generate(model, 60, device)
-    save_image(samples, OUTPUT_PATH + MODEL + '.png', padding=0, nrow=10)
+    # samples = generate(model, 60, device)
+    # save_image(samples, OUTPUT_PATH + MODEL + '.png', padding=0, nrow=10)
 
     train_losses, test_losses = utils.read_log(LOG_PATH, ([], []))
     plot_loss(train_losses, test_losses, PLOT_PATH)
