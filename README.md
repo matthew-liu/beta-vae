@@ -1,6 +1,3 @@
-# beta-vae
-A Pytorch Implementation of the β-VAE :)
-
 # Face Generation Using Variational Autoencoders
 This repo containing training code for two different VAEs implemented with Pytorch.
 
