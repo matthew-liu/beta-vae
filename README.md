@@ -24,7 +24,7 @@ Trained model can be found in [/checkpoints](/checkpoints).
 ##### Vector Arithmetic from original (leftmost) to wearing sunglasses (rightmost):
 ![l1](arts/arithmetic-dfc2-dh.png)
 
-##### Generated Images with random sampled latent z ~ N(0, 1):
+##### Generated Images with randomly sampled latent z ~ N(0, 1):
 ![l1](arts/dfc-300-dh.png)
 
 (Notes: output images above are results after image dehazing using [this script [3]](https://github.com/cssartori/image-dehazing.git))
