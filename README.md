@@ -3,6 +3,8 @@ This repo contains training code for two different VAEs implemented with Pytorch
 I used the [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) Dataset for training, with 182637 training images and 19962 testing images. <br />
 Trained model can be found in [/checkpoints](/checkpoints).
 
+![poster](arts/vae.png)
+
 ## Model structures:
 
 #### [β-VAE [1]](https://openreview.net/pdf?id=Sy2fzU9gl):
